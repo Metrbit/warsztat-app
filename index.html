@@ -2,21 +2,43 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Warsztat samochodowy</title>
+  <title>Warsztat</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🚗 System warsztatu</h1>
+<h1> Warsztat Samochodowy</h1>
 
-<div class="form">
-  <input id="name" placeholder="Klient">
-  <input id="car" placeholder="Samochód">
-  <input id="problem" placeholder="Opis usterki">
-  <button onclick="addTask()">Dodaj</button>
+<!-- komunikat -->
+<div id="message" class="message"></div>
+
+<div class="container">
+
+  <!-- LEWA STRONA -->
+  <div class="left">
+    <h2>Zgłoszenie</h2>
+    <input id="name" placeholder="Klient">
+    <input id="car" placeholder="Samochód">
+    <input id="problem" placeholder="Opis usterki">
+    <button onclick="addTask()">Dodaj</button>
+  </div>
+
+  <!-- PRAWA STRONA -->
+  <div class="right">
+    <h2>Lista napraw</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Klient</th>
+          <th>Samochód</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="list"></tbody>
+    </table>
+  </div>
+
 </div>
-
-<ul id="list"></ul>
 
 <script src="script.js"></script>
 </body>

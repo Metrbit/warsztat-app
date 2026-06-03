@@ -1,3 +1,4 @@
+let contacts = [];
 let tasks = [];
 let timer = null;
 
@@ -47,8 +48,15 @@ function addTask() {
 
   let price = detectPrice(problem);
 
+  // NIE ZNALEZIONO PROBLEMU
   if (!price) {
-    alert("Nie znaleziono ceny!");
+    contacts.push({
+      name: name,
+      phone: "333444555",
+      time: Date.now()
+    });
+
+    renderContacts();
     return;
   }
 
@@ -63,7 +71,6 @@ function addTask() {
 
   showMessage(problem, price, tasks.length - 1);
 }
-
 function accept(index) {
   tasks[index].status = "W trakcie naprawy";
   document.getElementById("message").style.display = "none";
@@ -101,5 +108,25 @@ function render() {
       </tr>
     `;
     list.innerHTML += row;
+    function renderContacts() {
+  let list = document.getElementById("contactList");
+  list.innerHTML = "";
+
+  let now = Date.now();
+
+  contacts = contacts.filter(c => now - c.time < 180000);
+
+  contacts.forEach(c => {
+    let row = `
+      <tr>
+        <td>${c.name}</td>
+        <td>${c.phone}</td>
+        <td>Proszę zadzwonić - konsultacja</td>
+      </tr>
+    `;
+    list.innerHTML += row;
+  });
+}
+
   });
 }

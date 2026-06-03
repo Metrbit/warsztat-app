@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Warsztat</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1> 🔧Warsztat Samochodowy🔧</h1>
-
-<!-- komunikat -->
-<div id="message" class="message"></div>
+<h1>🔧 Warsztat Samochodowy 🔧</h1>
 
 <div class="container">
 
-  <!-- LEWA STRONA -->
+  <!-- LEWA -->
   <div class="left">
     <h2>Zgłoszenie</h2>
     <input id="name" placeholder="Klient">
@@ -23,7 +21,7 @@
     <button onclick="addTask()">Dodaj</button>
   </div>
 
-  <!-- PRAWA STRONA -->
+  <!-- PRAWA -->
   <div class="right">
     <h2>Lista napraw</h2>
     <table>
@@ -37,20 +35,30 @@
       <tbody id="list"></tbody>
     </table>
   </div>
-<div id="message" class="message"></div>
-<h2>Proszę zadzwonić</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Klient</th>
-      <th>Telefon</th>
-      <th>Info</th>
-    </tr>
-  </thead>
-  <tbody id="contactList"></tbody>
-</table>
 
 </div>
+
+
+<div id="message" class="message"></div>
+
+
+<div id="contactSection">
+
+  <h2>Konsultacje</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Klient</th>
+        <th>Telefon</th>
+        <th>Info</th>
+      </tr>
+    </thead>
+    <tbody id="contactList"></tbody>
+  </table>
+
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>

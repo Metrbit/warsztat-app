@@ -1,72 +1,113 @@
-body {
-  font-family: Arial;
-  background: #0f172a;
-  color: white;
-  padding: 20px;
+let tasks = [];
+let contacts = [];
+
+const prices = {
+  "silnika": 1500,
+  "uszcz": 1500,
+  "hamul": 400,
+  "sprzęgła": 700,
+  "wymiana sprzęgła": 3000
+};
+
+function detectPrice(problem) {
+  problem = problem.toLowerCase();
+  for (let key in prices) {
+    if (problem.includes(key)) {
+      return prices[key];
+    }
+  }
+  return null;
 }
 
-h1 {
-  text-align: center;
+function addTask() {
+  const name = document.getElementById("name").value;
+  const car = document.getElementById("car").value;
+  const problem = document.getElementById("problem").value;
+
+  const price = detectPrice(problem);
+
+  if (!price) {
+    alert("Nie znaleziono usługi. Zadzwoń: 333444555");
+
+    contacts.push({
+      name,
+      time: Date.now()
+    });
+
+    renderContacts();
+    return;
+  }
+
+  tasks.push({
+    name,
+    car,
+    status: "W trakcie"
+  });
+
+  render();
+
+  showMessage(problem, price);
 }
 
-.container {
-  display: flex;
-  gap: 20px;
+function showMessage(problem, price) {
+  const msg = document.getElementById("message");
+
+  msg.style.display = "block";
+  msg.innerHTML = `
+    ${problem} - ${price} zł 
+    <br><br>
+    <button onclick="accept()">Akceptuj</button>
+  `;
 }
 
-.left, .right {
-  flex: 1;
-  background: #1e293b;
-  padding: 20px;
-  border-radius: 10px;
+function accept() {
+  document.getElementById("message").style.display = "none";
+
+  setTimeout(() => {
+    if (tasks.length > 0) {
+      tasks[tasks.length - 1].status = "Naprawiono ✅";
+      render();
+    }
+  }, 5000);
 }
 
-.left {
-  max-width: 300px;
+function render() {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  tasks.forEach(t => {
+    list.innerHTML += `
+      <tr>
+        <td>${t.name}</td>
+        <td>${t.car}</td>
+        <td>${t.status}</td>
+      </tr>
+    `;
+  });
+
+  renderContacts();
 }
 
-input {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
-}
+function renderContacts() {
+  const section = document.getElementById("contactSection");
+  const list = document.getElementById("contactList");
 
-button {
-  padding: 9px;
-  background: #22c55e;
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-}
+  list.innerHTML = "";
 
-button:hover {
-  background: #16a34a;
-}
+  if (contacts.length === 0) {
+    section.style.display = "none";
+    return;
+  }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
+  section.style.display = "block";
 
-th, td {
-  padding: 10px;
-  border-bottom: 1px solid gray;
-}
-
-.message {
-  margin-top: 20px;
-  background: #facc15;
-  padding: 15px;
-  border-radius: 8px;
-  display: none;
-  color: black;
-}
-
-#contactSection {
-  display: none;
+  contacts.forEach(c => {
+    list.innerHTML += `
+      <tr>
+        <td>${c.name}</td>
+        <td>333444555</td>
+        <td>Proszę zadzwonić</td>
+      </tr>
+    `;
+  });
 }

@@ -3,14 +3,14 @@ let timer = null;
 
 // ceny usterek
 const prices = {
-  "silnika": 1500,
-  "uszcz": 1500,
-  "hamul": 400,
-  "sprzęgła": 700,
+  "naprawa silnika": 1500,
+  "uszczlki wymiana": 1500,
+  "hamulce naprawa/wymiana": 400,
+  "sprzęgła naprawa": 700,
   "wymiana sprzęgła": 3000,
-  "lakier": 1000,
-  "elektry": 200,
-  "szyb": 1000
+  "farbowania": 1000,
+  "naprawa elektryczna": 200,
+  "wymiana wyby": 1000
 };
 
 function detectPrice(problem) {

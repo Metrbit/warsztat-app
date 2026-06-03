@@ -54,3 +54,6 @@ td, th {
   color: black;
   border-radius: 5px;
 }
+table{
+  margin-top: 15px;
+}

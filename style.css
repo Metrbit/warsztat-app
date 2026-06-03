@@ -30,8 +30,6 @@ input {
   width: 100%;
   margin: 10px 0;
   padding: 8px;
-  border-radius: 5px;
-  border: none;
 }
 
 button {
@@ -40,34 +38,22 @@ button {
   border: none;
   color: white;
   cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover {
-  background: #16a34a;
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
   margin-top: 10px;
 }
 
-th, td {
-  padding: 10px;
-  border-bottom: 1px solid gray;
-}
-
 .message {
-  margin-top: 20px;
-  background: #facc15;
-  padding: 15px;
-  border-radius: 8px;
-  display: none;
+  background: yellow;
   color: black;
+  padding: 10px;
+  margin-top: 20px;
+  display: none;
 }
-
 
 #contactSection {
   display: none;
 }
+``

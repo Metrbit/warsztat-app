@@ -1,43 +1,90 @@
 let tasks = [];
+let timer = null;
+
+// ceny usterek
+const prices = {
+  "silnika": 1500,
+  "uszcz": 1500,
+  "hamul": 400,
+  "sprzęgła": 700,
+  "wymiana sprzęgła": 3000,
+  "lakier": 1000,
+  "elektry": 200,
+  "szyb": 1000
+};
+
+function detectPrice(problem) {
+  problem = problem.toLowerCase();
+
+  for (let key in prices) {
+    if (problem.includes(key)) {
+      return prices[key];
+    }
+  }
+  return null;
+}
+
+function showMessage(text, price, index) {
+  const msg = document.getElementById("message");
+  msg.style.display = "block";
+
+  msg.innerHTML = `
+    ${text} - ${price} zł <br><br>
+    <button onclick="accept(${index})">Akceptuj</button>
+    <button onclick="cancel(${index})">Anuluj</button>
+  `;
+
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    resetAll();
+  }, 180000); // 3 minuty
+}
 
 function addTask() {
   let name = document.getElementById("name").value;
   let car = document.getElementById("car").value;
   let problem = document.getElementById("problem").value;
 
-  if (!name || !car || !problem) {
-    alert("Wypełnij wszystkie pola!");
+  let price = detectPrice(problem);
+
+  if (!price) {
+    alert("Nie znaleziono ceny!");
     return;
   }
 
   let task = {
-    name: name,
-    car: car,
-    problem: problem,
-    status: "Przyjęte"
+    name,
+    car,
+    status: "Oczekiwanie"
   };
 
   tasks.push(task);
   render();
 
-  // czyści pola po dodaniu
-  document.getElementById("name").value = "";
-  document.getElementById("car").value = "";
-  document.getElementById("problem").value = "";
+  showMessage(problem, price, tasks.length - 1);
 }
 
-function changeStatus(index) {
-  const statuses = ["Przyjęte", "W trakcie", "Gotowe"];
+function accept(index) {
+  tasks[index].status = "W trakcie naprawy";
+  document.getElementById("message").style.display = "none";
+  render();
 
-  let currentIndex = statuses.indexOf(tasks[index].status);
-  let nextIndex = (currentIndex + 1) % statuses.length;
+  // po 10 sekundach kończy naprawę
+  setTimeout(() => {
+    tasks[index].status = "Naprawiono! Przygotuj płatność";
+    render();
+  }, 10000);
+}
 
-  tasks[index].status = statuses[nextIndex];
+function cancel(index) {
+  tasks.splice(index, 1);
+  document.getElementById("message").style.display = "none";
   render();
 }
 
-function removeTask(index) {
-  tasks.splice(index, 1);
+function resetAll() {
+  tasks = [];
+  document.getElementById("message").style.display = "none";
   render();
 }
 
@@ -45,18 +92,14 @@ function render() {
   let list = document.getElementById("list");
   list.innerHTML = "";
 
-  tasks.forEach((t, i) => {
-    let li = document.createElement("li");
-
-    li.innerHTML = `
-      <b>${t.name}</b> (${t.car})<br>
-      ${t.problem}<br>
-      <b>Status:</b> ${t.status}<br><br>
-
-      <button onclick="changeStatus(${i})">Zmień status</button>
-      <button onclick="removeTask(${i})">Usuń</button>
+  tasks.forEach(t => {
+    let row = `
+      <tr>
+        <td>${t.name}</td>
+        <td>${t.car}</td>
+        <td>${t.status}</td>
+      </tr>
     `;
-
-    list.appendChild(li);
+    list.innerHTML += row;
   });
 }

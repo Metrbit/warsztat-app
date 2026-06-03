@@ -1,151 +1,72 @@
-let tasks = [];
-let contacts = [];
-let timer = null;
-
-// 🔧 baza cen
-const prices = {
-  "silnika": 1500,
-  "uszcz": 1500,
-  "hamul": 400,
-  "sprzęgła": 700,
-  "wymiana sprzęgła": 3000,
-  "lakier": 1000,
-  "elektry": 200,
-  "szyb": 1000
-};
-
-// 🔍 wyszukiwanie ceny po opisie
-function detectPrice(problem) {
-  problem = problem.toLowerCase();
-
-  for (let key in prices) {
-    if (problem.includes(key)) {
-      return prices[key];
-    }
-  }
-  return null;
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  padding: 20px;
 }
 
-// ✅ dodawanie zgłoszenia
-function addTask() {
-  let name = document.getElementById("name").value;
-  let car = document.getElementById("car").value;
-  let problem = document.getElementById("problem").value;
-
-  let price = detectPrice(problem);
-
-  // ❌ brak dopasowania → konsultacja
-  if (!price) {
-    alert("Nie znaleziono usługi. Proszę zadzwonić: 333444555");
-
-    contacts.push({
-      name: name,
-      phone: "333444555",
-      time: Date.now()
-    });
-
-    renderContacts();
-    return;
-  }
-
-  // ✅ normalne zgłoszenie
-  let task = {
-    name,
-    car,
-    status: "Oczekiwanie"
-  };
-
-  tasks.push(task);
-  render();
-
-  showMessage(problem, price, tasks.length - 1);
+h1 {
+  text-align: center;
 }
 
-// 📢 komunikat
-function showMessage(problem, price, index) {
-  const msg = document.getElementById("message");
-
-  msg.style.display = "block";
-  msg.innerHTML = `
-    🔧 ${problem} - ${price} zł <br><br>
-    <button onclick="accept(${index})">Akceptuj</button>
-    <button onclick="cancel(${index})">Anuluj</button>
-  `;
-
-  clearTimeout(timer);
-  timer = setTimeout(() => {
-    resetAll();
-  }, 180000); // 3 min
+.container {
+  display: flex;
+  gap: 20px;
 }
 
-// ✅ akceptacja
-function accept(index) {
-  tasks[index].status = "W trakcie naprawy";
-  document.getElementById("message").style.display = "none";
-
-  render();
-
-  // symulacja zakończenia naprawy
-  setTimeout(() => {
-    tasks[index].status = "Naprawiono! Proszę przygotować płatność";
-    render();
-  }, 10000);
+.left, .right {
+  flex: 1;
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-// ❌ anulowanie
-function cancel(index) {
-  tasks.splice(index, 1);
-  document.getElementById("message").style.display = "none";
-  render();
+.left {
+  max-width: 300px;
 }
 
-// 🔄 reset wszystkiego (po 3 minutach)
-function resetAll() {
-  tasks = [];
-  contacts = [];
-  document.getElementById("message").style.display = "none";
-  render();
+input {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
 }
 
-// 📋 tabela napraw
-function render() {
-  let list = document.getElementById("list");
-  list.innerHTML = "";
-
-  tasks.forEach(t => {
-    let row = `
-      <tr>
-        <td>${t.name}</td>
-        <td>${t.car}</td>
-        <td>${t.status}</td>
-      </tr>
-    `;
-
-    list.innerHTML += row;
-  });
-
-  renderContacts(); // 🔥 ważne!
+button {
+  padding: 8px;
+  background: #22c55e;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
-// tabela konsuktacji (3 minuty)
-function renderContacts() {
-  let list = document.getElementById("contactList");
-  list.innerHTML = "";
+button:hover {
+  background: #16a34a;
+}
 
-  let now = Date.now();
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
 
-  // filtr 3 minut
-  contacts = contacts.filter(c => now - c.time < 180000);
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid gray;
+}
 
-  contacts.forEach(c => {
-    let row = `
-      <tr>
-        <td>${c.name}</td>
-        <td>${c.phone}</td>
-        <td>Proszę zadzwonić - konsultacja</td>
-      </tr>
-    `;
+.message {
+  margin-top: 20px;
+  background: #facc15;
+  padding: 15px;
+  border-radius: 8px;
+  display: none;
+  color: black;
+}
 
-    list.innerHTML += row;
-  });
+#contactSection {
+  display: none;
 }
